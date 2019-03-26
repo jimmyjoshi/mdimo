@@ -43,5 +43,5 @@ trait UserRelationship
     public function events()
     {
         return $this->hasMany(Event::class);
-    }    
+    }
 }

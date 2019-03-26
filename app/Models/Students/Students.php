@@ -1,6 +1,8 @@
-<?php namespace App\Models\Students;
+<?php
 
-/**
+namespace App\Models\Students;
+
+/*
  * Class Students
  *
  * @author Anuj Jaha ( er.anujjaha@gmail.com)
@@ -14,28 +16,24 @@ class Students extends BaseModel
 {
     use Attribute, Relationship;
     /**
-     * Database Table
-     *
+     * Database Table.
      */
-    protected $table = "students";
+    protected $table = 'students';
 
     /**
-     * Fillable Database Fields
-     *
+     * Fillable Database Fields.
      */
     protected $fillable = [
-        "id", "name", "age", "std", 
+        'id', 'name', 'age', 'std',
     ];
 
     /**
-     * Timestamp flag
-     *
+     * Timestamp flag.
      */
     public $timestamps = false;
 
     /**
-     * Guarded ID Column
-     *
+     * Guarded ID Column.
      */
-    protected $guarded = ["id"];
+    protected $guarded = ['id'];
 }

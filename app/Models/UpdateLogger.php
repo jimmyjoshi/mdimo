@@ -1,64 +1,65 @@
-<?php  namespace App\Models;
+<?php
 
-/**
+namespace App\Models;
+
+/*
  * Class UpdateLogger
  *
  * @author Anuj Jaha ( er.anujjaha@gmail.com )
  */
 
-use DB, Sentry, DateTime, DateTimeZone;
+use DateTime;
+use DateTimeZone;
 use App\Models\Access\User\User;
-use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 
 class UpdateLogger extends BaseModel
 {
     /**
-     * Accounts
+     * Accounts.
      *
      * @var array
      */
-    protected $table = "application_logs";
+    protected $table = 'application_logs';
 
     /**
-     * Timestamps
+     * Timestamps.
      *
      * @var bool
      */
     public $timestamps = false;
 
     /**
-     * Additional Time Conversions
+     * Additional Time Conversions.
      *
      * @var array
      */
     public $additionalTimeConversions = [
-        'action_time'
+        'action_time',
     ];
 
-	/**
-	 * Dates
-	 *
-	 * @var array
-	 */
-	protected $dates = ['action_time'];
+    /**
+     * Dates.
+     *
+     * @var array
+     */
+    protected $dates = ['action_time'];
 
     /**
-     * Fillable
+     * Fillable.
      *
      * @var array
      */
     protected $fillable = [
-        "user_id",
-        "section",
-        "action",
-        "item",
-        "action_time"
+        'user_id',
+        'section',
+        'action',
+        'item',
+        'action_time',
     ];
 
     /**
-     * Relationship Mapping for User
-     *
+     * Relationship Mapping for User.
      */
     public function user()
     {
@@ -74,11 +75,12 @@ class UpdateLogger extends BaseModel
     public static function create(array $attributes = [])
     {
         $attributes['action_time'] = new DateTime;
+
         return parent::query()->create($attributes);
     }
 
     /**
-     * Get Action Time
+     * Get Action Time.
      *
      * @param bool $model
      * @return string
@@ -95,7 +97,7 @@ class UpdateLogger extends BaseModel
     }
 
     /**
-     * Get Action Logs
+     * Get Action Logs.
      *
      * @param $model
      * @param mixed $item
@@ -104,19 +106,17 @@ class UpdateLogger extends BaseModel
      */
     public function getActionLogs($model = false, $item = false, $limit = 10)
     {
-        if(!$model || !isset($model->id))
-        {
+        if (! $model || ! isset($model->id)) {
             return [];
         }
 
         $modelClass = (new \ReflectionClass($model))->getShortName();
 
-            $actions = parent::where('item', '=', $model->getOriginal('id'))
+        $actions = parent::where('item', '=', $model->getOriginal('id'))
                 ->where('section', '=', $modelClass)
                 ->orderBy('action_time', 'desc');
 
-        if($item)
-        {
+        if ($item) {
             $actions->where('item', '=', $item);
         }
 

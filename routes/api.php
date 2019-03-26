@@ -17,8 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['namespace' => 'Api',], function () 
-{
+Route::group(['namespace' => 'Api'], function () {
     Route::post('login', 'UsersController@login')->name('api.login');
     /*Route::post('register', 'UsersController@register')->name('api.register');
     Route::post('verifyotp', 'UsersController@verifyOtp')->name('api.verifyotp');
@@ -28,7 +27,6 @@ Route::group(['namespace' => 'Api',], function ()
     Route::post('removeotp', 'UsersController@removeOtp')->name('api.removeotp');*/
 });
 
-Route::group(['middleware' => 'jwt.customauth'], function () 
-{
+Route::group(['middleware' => 'jwt.customauth'], function () {
     includeRouteFiles(__DIR__.'/Api/');
 });

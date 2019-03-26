@@ -1,6 +1,8 @@
-<?php namespace App\Models\Event;
+<?php
 
-/**
+namespace App\Models\Event;
+
+/*
  * Class Event
  *
  * @author Anuj Jaha (er.anujjaha@gmail.com)
@@ -14,14 +16,12 @@ class Event extends BaseModel
 {
     use Attribute, Relationship;
     /**
-     * Database Table
-     *
+     * Database Table.
      */
-    protected $table = "events";
+    protected $table = 'events';
 
     /**
-     * Fillable Database Fields
-     *
+     * Fillable Database Fields.
      */
     protected $fillable = [
         'name',
@@ -29,12 +29,11 @@ class Event extends BaseModel
         'title',
         'creator_id',
         'start_date',
-        'end_date'
+        'end_date',
     ];
 
     /**
-     * Guarded ID Column
-     *
+     * Guarded ID Column.
      */
-    protected $guarded = ["id"];
+    protected $guarded = ['id'];
 }

@@ -13,7 +13,6 @@ namespace App\Http\Middleware;
 
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use App\Http\Middleware\BaseJWTMiddleware;
 
 class CustomJWTMiddleware extends BaseJWTMiddleware
 {
@@ -30,31 +29,28 @@ class CustomJWTMiddleware extends BaseJWTMiddleware
             return $this->respond('tymon.jwt.absent', 'token_not_provided', 400);
         }
 
-        try 
-        {
+        try {
             $user = $this->auth->authenticate($token);
-        } catch (TokenExpiredException $e) 
-        {
+        } catch (TokenExpiredException $e) {
             $respond = [
                 'success'   => false,
-                'message'   => 'Token Expired - Need to Regenerate Token'
+                'message'   => 'Token Expired - Need to Regenerate Token',
             ];
 
             return $this->respond('tymon.jwt.expired', $respond, $e->getStatusCode(), [$e]);
-        } catch (JWTException $e)
-        {
+        } catch (JWTException $e) {
             $respond = [
                 'success'   => false,
-                'message'   => 'Invalid Token - Wrong Token !'
+                'message'   => 'Invalid Token - Wrong Token !',
             ];
+
             return $this->respond('tymon.jwt.invalid', $respond, $e->getStatusCode(), [$e]);
         }
 
-        if (! $user)
-        {
+        if (! $user) {
             $respond = [
                 'success'   => false,
-                'message'   => 'Opps, User not Found !'
+                'message'   => 'Opps, User not Found !',
             ];
 
             return $this->respond('tymon.jwt.user_not_found', 'user_not_found', 404);

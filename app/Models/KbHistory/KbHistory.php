@@ -1,6 +1,8 @@
-<?php namespace App\Models\KbHistory;
+<?php
 
-/**
+namespace App\Models\KbHistory;
+
+/*
  * Class KbHistory
  *
  * @author Anuj Jaha ( er.anujjaha@gmail.com)
@@ -14,28 +16,24 @@ class KbHistory extends BaseModel
 {
     use Attribute, Relationship;
     /**
-     * Database Table
-     *
+     * Database Table.
      */
-    protected $table = "history";
+    protected $table = 'history';
 
     /**
-     * Fillable Database Fields
-     *
+     * Fillable Database Fields.
      */
     protected $fillable = [
-        "id", "type_id", "user_id", "entity_id", "icon", "class", "text", "assets", "created_at", "updated_at", 
+        'id', 'type_id', 'user_id', 'entity_id', 'icon', 'class', 'text', 'assets', 'created_at', 'updated_at',
     ];
 
     /**
-     * Timestamp flag
-     *
+     * Timestamp flag.
      */
     public $timestamps = true;
 
     /**
-     * Guarded ID Column
-     *
+     * Guarded ID Column.
      */
-    protected $guarded = ["id"];
+    protected $guarded = ['id'];
 }

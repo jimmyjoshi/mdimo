@@ -2,32 +2,30 @@
 
 namespace App\Http\Controllers\Api;
 
+use Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Transformers\UserTransformer;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Response;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuthExceptions\JWTException;
-use App\Http\Transformers\UserTransformer;
 
 /**
- * Class Controller
- * @package App\Http\Controllers
+ * Class Controller.
  */
 class BaseApiController extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
     /**
-     * UserTransformer
+     * UserTransformer.
      *
      * @var object
      */
     protected $userTransformer;
 
     /**
-     * __construct
-     * 
+     * __construct.
+     *
      * @param UserTransformer $userTransformer
      */
     public function __construct()
@@ -36,25 +34,24 @@ class BaseApiController extends BaseController
     }
 
     /**
-     * default status code
+     * default status code.
      *
-     * @var integer
+     * @var int
      */
     protected $statusCode = 200;
-    
+
     /**
-     * get the status code
+     * get the status code.
      *
      * @return statuscode
      */
-    
     public function getStatusCode()
     {
-    	return $this->statusCode;
+        return $this->statusCode;
     }
 
     /**
-     * Get JWT Authenticated User
+     * Get JWT Authenticated User.
      *
      * @return object
      */
@@ -64,8 +61,8 @@ class BaseApiController extends BaseController
     }
 
     /**
-     * Get Api User Info
-     * 
+     * Get Api User Info.
+     *
      * @return array
      */
     public function getApiUserInfo()
@@ -74,66 +71,66 @@ class BaseApiController extends BaseController
     }
 
     /**
-     * set the status code
+     * set the status code.
      *
      * @param int $statusCode
      * @return mix
      */
     public function setStatusCode($statusCode = 200)
     {
-    	$this->statusCode = $statusCode;
+        $this->statusCode = $statusCode;
 
-    	return $this;
+        return $this;
     }
 
     /**
-     * Success Response
-     * 
+     * Success Response.
+     *
      * @param array $data
      * @param string $message
      * @param int $code
      * @return json|string
      */
-    public function successResponse($data = array(), $message = 'Success', $code = 200)
+    public function successResponse($data = [], $message = 'Success', $code = 200)
     {
         $response = [
             'data'      => $data,
             'status'    => true,
             'message'   => $message ? $message : 'Success',
-            'code'      => $code ? $code : $this->getStatusCode()
+            'code'      => $code ? $code : $this->getStatusCode(),
         ];
 
         return response()->json([
-            (object)$response],
-            $this->getStatusCode()  
+            (object) $response, ],
+            $this->getStatusCode()
         );
     }
 
     /**
-     * Failure Response
-     * 
+     * Failure Response.
+     *
      * @param array $data
      * @param string $message
      * @param int $code
      * @return json|string
      */
-    public function failureResponse($data = array(), $message = 'Failure', $code = null)
+    public function failureResponse($data = [], $message = 'Failure', $code = null)
     {
         $response = [
             'error'     => $data,
             'status'    => false,
             'message'   => $message ? $message : 'Failure',
-            'code'      => $code ? $code : $this->getStatusCode()
+            'code'      => $code ? $code : $this->getStatusCode(),
         ];
 
         return response()->json([
-            (object)$response],
-            $this->getStatusCode()  
+            (object) $response, ],
+            $this->getStatusCode()
         );
     }
 
     /**
-     * respond with pagincation
+     * respond with pagincation.
      *
      * @param Paginator $lessions
      * @param array $data
@@ -146,9 +143,10 @@ class BaseApiController extends BaseController
                 'total_count'   => $lessions->total(),
                 'total_pages'   => ceil($lessions->total() / $lessions->perPage()),
                 'current_page'  => $lessions->currentPage(),
-                'limit'         => $lessions->perPage()
-             ]
+                'limit'         => $lessions->perPage(),
+             ],
         ]);
+
         return $this->respond($data);
     }
 }

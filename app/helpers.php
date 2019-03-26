@@ -27,14 +27,13 @@ if (! function_exists('access')) {
 
 if (! function_exists('hasher')) {
     /**
-     * Hasher Function
+     * Hasher Function.
      */
     function hasher()
     {
         return app('hasher');
     }
 }
-
 
 if (! function_exists('history')) {
     /**

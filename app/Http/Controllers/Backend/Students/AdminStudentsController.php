@@ -1,4 +1,6 @@
-<?php namespace App\Http\Controllers\Backend\Students;
+<?php
+
+namespace App\Http\Controllers\Backend\Students;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -6,41 +8,40 @@ use Yajra\Datatables\Facades\Datatables;
 use App\Repositories\Students\EloquentStudentsRepository;
 
 /**
- * Class AdminStudentsController
+ * Class AdminStudentsController.
  */
 class AdminStudentsController extends Controller
 {
     /**
-     * Students Repository
+     * Students Repository.
      *
      * @var object
      */
     public $repository;
 
     /**
-     * Create Success Message
+     * Create Success Message.
      *
      * @var string
      */
-    protected $createSuccessMessage = "Students Created Successfully!";
+    protected $createSuccessMessage = 'Students Created Successfully!';
 
     /**
-     * Edit Success Message
+     * Edit Success Message.
      *
      * @var string
      */
-    protected $editSuccessMessage = "Students Edited Successfully!";
+    protected $editSuccessMessage = 'Students Edited Successfully!';
 
     /**
-     * Delete Success Message
+     * Delete Success Message.
      *
      * @var string
      */
-    protected $deleteSuccessMessage = "Students Deleted Successfully";
+    protected $deleteSuccessMessage = 'Students Deleted Successfully';
 
     /**
-     * __construct
-     *
+     * __construct.
      */
     public function __construct()
     {
@@ -48,31 +49,31 @@ class AdminStudentsController extends Controller
     }
 
     /**
-     * Students Listing
+     * Students Listing.
      *
      * @return \Illuminate\View\View
      */
     public function index()
     {
         return view($this->repository->setAdmin(true)->getModuleView('listView'))->with([
-            'repository' => $this->repository
+            'repository' => $this->repository,
         ]);
     }
 
     /**
-     * Students View
+     * Students View.
      *
      * @return \Illuminate\View\View
      */
     public function create(Request $request)
     {
         return view($this->repository->setAdmin(true)->getModuleView('createView'))->with([
-            'repository' => $this->repository
+            'repository' => $this->repository,
         ]);
     }
 
     /**
-     * Students Store
+     * Students Store.
      *
      * @return \Illuminate\View\View
      */
@@ -84,7 +85,7 @@ class AdminStudentsController extends Controller
     }
 
     /**
-     * Students Edit
+     * Students Edit.
      *
      * @return \Illuminate\View\View
      */
@@ -94,12 +95,12 @@ class AdminStudentsController extends Controller
 
         return view($this->repository->setAdmin(true)->getModuleView('editView'))->with([
             'item'          => $item,
-            'repository'    => $this->repository
+            'repository'    => $this->repository,
         ]);
     }
 
     /**
-     * Students Show
+     * Students Show.
      *
      * @return \Illuminate\View\View
      */
@@ -109,13 +110,12 @@ class AdminStudentsController extends Controller
 
         return view($this->repository->setAdmin(true)->getModuleView('editView'))->with([
             'item'          => $item,
-            'repository'    => $this->repository
+            'repository'    => $this->repository,
         ]);
     }
 
-
     /**
-     * Students Update
+     * Students Update.
      *
      * @return \Illuminate\View\View
      */
@@ -127,7 +127,7 @@ class AdminStudentsController extends Controller
     }
 
     /**
-     * Students Destroy
+     * Students Destroy.
      *
      * @return \Illuminate\View\View
      */
@@ -139,7 +139,7 @@ class AdminStudentsController extends Controller
     }
 
     /**
-     * Get Table Data
+     * Get Table Data.
      *
      * @return json|mixed
      */
