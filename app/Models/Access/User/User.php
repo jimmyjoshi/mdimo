@@ -60,7 +60,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get Full Name
+     * Get Full Name.
      *
      * @param $user
      * @return string
@@ -68,6 +68,7 @@ class User extends Authenticatable
     public function getFullName($user = flase)
     {
         $user = $user ? $user : $this;
-        return $user->first_name . ' ' . $user->last_name;
+
+        return $user->first_name.' '.$user->last_name;
     }
 }

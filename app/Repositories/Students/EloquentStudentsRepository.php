@@ -1,6 +1,8 @@
-<?php namespace App\Repositories\Students;
+<?php
 
-/**
+namespace App\Repositories\Students;
+
+/*
  * Class EloquentStudentsRepository
  *
  * @author Anuj Jaha ( er.anujjaha@gmail.com)
@@ -13,21 +15,21 @@ use App\Exceptions\GeneralException;
 class EloquentStudentsRepository extends DbRepository
 {
     /**
-     * Students Model
+     * Students Model.
      *
-     * @var Object
+     * @var object
      */
     public $model;
 
     /**
-     * Students Title
+     * Students Title.
      *
      * @var string
      */
     public $moduleTitle = 'Students';
 
     /**
-     * Table Headers
+     * Table Headers.
      *
      * @var array
      */
@@ -36,11 +38,11 @@ class EloquentStudentsRepository extends DbRepository
 'name'        => 'Name',
 'age'        => 'Age',
 'std'        => 'Std',
-"actions"         => "Actions"
+'actions'         => 'Actions',
     ];
 
     /**
-     * Table Columns
+     * Table Columns.
      *
      * @var array
      */
@@ -49,71 +51,71 @@ class EloquentStudentsRepository extends DbRepository
                 'data'          => 'id',
                 'name'          => 'id',
                 'searchable'    => true,
-                'sortable'      => true
+                'sortable'      => true,
             ],
-		'name' =>   [
+        'name' =>   [
                 'data'          => 'name',
                 'name'          => 'name',
                 'searchable'    => true,
-                'sortable'      => true
+                'sortable'      => true,
             ],
-		'age' =>   [
+        'age' =>   [
                 'data'          => 'age',
                 'name'          => 'age',
                 'searchable'    => true,
-                'sortable'      => true
+                'sortable'      => true,
             ],
-		'std' =>   [
+        'std' =>   [
                 'data'          => 'std',
                 'name'          => 'std',
                 'searchable'    => true,
-                'sortable'      => true
+                'sortable'      => true,
             ],
-		'actions' => [
+        'actions' => [
             'data'          => 'actions',
             'name'          => 'actions',
             'searchable'    => false,
-            'sortable'      => false
-        ]
+            'sortable'      => false,
+        ],
     ];
 
     /**
-     * Is Admin
+     * Is Admin.
      *
-     * @var boolean
+     * @var bool
      */
     protected $isAdmin = false;
 
     /**
-     * Admin Route Prefix
+     * Admin Route Prefix.
      *
      * @var string
      */
     public $adminRoutePrefix = 'admin';
 
     /**
-     * Client Route Prefix
+     * Client Route Prefix.
      *
      * @var string
      */
     public $clientRoutePrefix = 'frontend';
 
     /**
-     * Admin View Prefix
+     * Admin View Prefix.
      *
      * @var string
      */
     public $adminViewPrefix = 'backend';
 
     /**
-     * Client View Prefix
+     * Client View Prefix.
      *
      * @var string
      */
     public $clientViewPrefix = 'frontend';
 
     /**
-     * Module Routes
+     * Module Routes.
      *
      * @var array
      */
@@ -124,11 +126,11 @@ class EloquentStudentsRepository extends DbRepository
         'editRoute'     => 'students.edit',
         'updateRoute'   => 'students.update',
         'deleteRoute'   => 'students.destroy',
-        'dataRoute'     => 'students.get-list-data'
+        'dataRoute'     => 'students.get-list-data',
     ];
 
     /**
-     * Module Views
+     * Module Views.
      *
      * @var array
      */
@@ -140,8 +142,7 @@ class EloquentStudentsRepository extends DbRepository
     ];
 
     /**
-     * Construct
-     *
+     * Construct.
      */
     public function __construct()
     {
@@ -149,7 +150,7 @@ class EloquentStudentsRepository extends DbRepository
     }
 
     /**
-     * Create Students
+     * Create Students.
      *
      * @param array $input
      * @return mixed
@@ -159,8 +160,7 @@ class EloquentStudentsRepository extends DbRepository
         $input = $this->prepareInputData($input, true);
         $model = $this->model->create($input);
 
-        if($model)
-        {
+        if ($model) {
             return $model;
         }
 
@@ -168,7 +168,7 @@ class EloquentStudentsRepository extends DbRepository
     }
 
     /**
-     * Update Students
+     * Update Students.
      *
      * @param int $id
      * @param array $input
@@ -178,8 +178,7 @@ class EloquentStudentsRepository extends DbRepository
     {
         $model = $this->model->find($id);
 
-        if($model)
-        {
+        if ($model) {
             $input = $this->prepareInputData($input);
 
             return $model->update($input);
@@ -189,7 +188,7 @@ class EloquentStudentsRepository extends DbRepository
     }
 
     /**
-     * Destroy Students
+     * Destroy Students.
      *
      * @param int $id
      * @return mixed
@@ -199,8 +198,7 @@ class EloquentStudentsRepository extends DbRepository
     {
         $model = $this->model->find($id);
 
-        if($model)
-        {
+        if ($model) {
             return $model->delete();
         }
 
@@ -208,7 +206,7 @@ class EloquentStudentsRepository extends DbRepository
     }
 
     /**
-     * Get All
+     * Get All.
      *
      * @param string $orderBy
      * @param string $sort
@@ -220,15 +218,14 @@ class EloquentStudentsRepository extends DbRepository
     }
 
     /**
-     * Get by Id
+     * Get by Id.
      *
      * @param int $id
      * @return mixed
      */
     public function getById($id = null)
     {
-        if($id)
-        {
+        if ($id) {
             return $this->model->find($id);
         }
 
@@ -236,14 +233,14 @@ class EloquentStudentsRepository extends DbRepository
     }
 
     /**
-     * Get Table Fields
+     * Get Table Fields.
      *
      * @return array
      */
     public function getTableFields()
     {
         return [
-            $this->model->getTable().'.*'
+            $this->model->getTable().'.*',
         ];
     }
 
@@ -256,9 +253,9 @@ class EloquentStudentsRepository extends DbRepository
     }
 
     /**
-     * Set Admin
+     * Set Admin.
      *
-     * @param boolean $isAdmin [description]
+     * @param bool $isAdmin [description]
      */
     public function setAdmin($isAdmin = false)
     {
@@ -268,16 +265,15 @@ class EloquentStudentsRepository extends DbRepository
     }
 
     /**
-     * Prepare Input Data
+     * Prepare Input Data.
      *
      * @param array $input
      * @param bool $isCreate
      * @return array
      */
-    public function prepareInputData($input = array(), $isCreate = false)
+    public function prepareInputData($input = [], $isCreate = false)
     {
-        if($isCreate)
-        {
+        if ($isCreate) {
             $input = array_merge($input, ['user_id' => access()->user()->id]);
         }
 
@@ -285,14 +281,13 @@ class EloquentStudentsRepository extends DbRepository
     }
 
     /**
-     * Get Table Headers
+     * Get Table Headers.
      *
      * @return string
      */
     public function getTableHeaders()
     {
-        if($this->isAdmin)
-        {
+        if ($this->isAdmin) {
             return json_encode($this->setTableStructure($this->tableHeaders));
         }
 
@@ -304,14 +299,13 @@ class EloquentStudentsRepository extends DbRepository
     }
 
     /**
-     * Get Table Columns
+     * Get Table Columns.
      *
      * @return string
      */
     public function getTableColumns()
     {
-        if($this->isAdmin)
-        {
+        if ($this->isAdmin) {
             return json_encode($this->setTableStructure($this->tableColumns));
         }
 

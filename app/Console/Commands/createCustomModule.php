@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Library\ModuleGenerator\ModuleGenerator;
 use Illuminate\Console\Command;
+use App\Library\ModuleGenerator\ModuleGenerator;
 
 class createCustomModule extends Command
 {
@@ -39,43 +39,43 @@ class createCustomModule extends Command
     public function handle()
     {
         $moduleName = $this->argument('moduleName');
-        $tableName  = $this->argument('tableName');
+        $tableName = $this->argument('tableName');
 
         $module = new ModuleGenerator($moduleName);
         $module->setTableName($tableName);
 
         // Generate Route
         $routeStatus = $module->generateRoute();
-        $routeStatus ? $this->info("Routes Generated Successfully !") : $this->error("Ops, Something went wrong in Routes.");
+        $routeStatus ? $this->info('Routes Generated Successfully !') : $this->error('Ops, Something went wrong in Routes.');
 
         // Generate Model
         $modelStatus = $module->generateModel();
-        $modelStatus ? $this->info("Model File Generated Successfully !") : $this->error("Ops, Something went wrong in Model.");
+        $modelStatus ? $this->info('Model File Generated Successfully !') : $this->error('Ops, Something went wrong in Model.');
 
         // Generate Controller
         $controllerStatus = $module->generateController();
-        $controllerStatus ? $this->info("Controller File Generated Successfully !") : $this->error("Ops, Something went wrong in Controller.");
+        $controllerStatus ? $this->info('Controller File Generated Successfully !') : $this->error('Ops, Something went wrong in Controller.');
 
         // Generate Eloquent
         $eloquentStatus = $module->generateEloquent();
-        $eloquentStatus ? $this->info("Eloquent File Generated Successfully !") : $this->error("Ops, Something went wrong in Eloquent.");
+        $eloquentStatus ? $this->info('Eloquent File Generated Successfully !') : $this->error('Ops, Something went wrong in Eloquent.');
 
         // Generate View
         $viewStatus = $module->generateModuleView();
-        $viewStatus ? $this->info("View Files Generated Successfully !") : $this->error("Ops, Something went wrong in View.");
+        $viewStatus ? $this->info('View Files Generated Successfully !') : $this->error('Ops, Something went wrong in View.');
 
         // Generated API Route
         $apiRouteStatus = $module->generateAPIRoute();
-        $apiRouteStatus ? $this->info("API Route Generated Successfully !") : $this->error("Ops, Something went wrong in API Route.");
+        $apiRouteStatus ? $this->info('API Route Generated Successfully !') : $this->error('Ops, Something went wrong in API Route.');
 
         // Generated API Controller
         $apiControllerStatus = $module->generateAPIController();
-        $apiControllerStatus ? $this->info("API Controller Generated Successfully !") : $this->error("Ops, Something went wrong in API Controller.");
+        $apiControllerStatus ? $this->info('API Controller Generated Successfully !') : $this->error('Ops, Something went wrong in API Controller.');
 
-         // Generated API Transformer
+        // Generated API Transformer
         $apiTransformerStatus = $module->generateAPITransformer();
-        $apiTransformerStatus ? $this->info("API Transformer Generated Successfully !") : $this->error("Ops, Something went wrong in API Transformer .");
+        $apiTransformerStatus ? $this->info('API Transformer Generated Successfully !') : $this->error('Ops, Something went wrong in API Transformer .');
 
-        $this->comment("Process Completed !");
+        $this->comment('Process Completed !');
     }
 }

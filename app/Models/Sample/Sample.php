@@ -1,6 +1,8 @@
-<?php namespace App\Models\Sample;
+<?php
 
-/**
+namespace App\Models\Sample;
+
+/*
  * Class Sample
  *
  * @author Anuj Jaha ( er.anujjaha@gmail.com)
@@ -14,28 +16,24 @@ class Sample extends BaseModel
 {
     use Attribute, Relationship;
     /**
-     * Database Table
-     *
+     * Database Table.
      */
-    protected $table = "data_sample";
+    protected $table = 'data_sample';
 
     /**
-     * Fillable Database Fields
-     *
+     * Fillable Database Fields.
      */
     protected $fillable = [
         'id',
     ];
 
     /**
-     * Timestamp flag
-     *
+     * Timestamp flag.
      */
     public $timestamps = false;
 
     /**
-     * Guarded ID Column
-     *
+     * Guarded ID Column.
      */
-    protected $guarded = ["id"];
+    protected $guarded = ['id'];
 }

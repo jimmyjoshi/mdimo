@@ -2,26 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use App\Http\Requests;
+use Auth;
+use Response;
 use Illuminate\Http\Request;
 use App\Models\Access\User\User;
-use Response;
-use Carbon;
-use App\Repositories\Backend\User\UserContract;
-use App\Repositories\Backend\UserNotification\UserNotificationRepositoryContract;
-use App\Http\Transformers\UserTransformer;
-use App\Http\Utilities\FileUploads;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Controllers\Controller;
 use Tymon\JWTAuthExceptions\JWTException;
-use Auth;
+use App\Http\Transformers\UserTransformer;
 
-class UsersController extends Controller 
+class UsersController extends Controller
 {
     protected $userTransformer;
+
     /**
-     * __construct
+     * __construct.
      */
     public function __construct()
     {
@@ -29,12 +24,12 @@ class UsersController extends Controller
     }
 
     /**
-     * Login request
-     * 
+     * Login request.
+     *
      * @param Request $request
      * @return type
      */
-    public function login(Request $request) 
+    public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -47,32 +42,31 @@ class UsersController extends Controller
             // something went wrong
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-        
+
         $user = Auth::user()->toArray();
 
         $userData = array_merge($user, ['token' => $token]);
 
-        $responseData = $this->userTransformer->transform((object)$userData);
+        $responseData = $this->userTransformer->transform((object) $userData);
 
         // if no errors are encountered we can return a JWT
         return response()->json($responseData);
     }
 
     /**
-     * Logout request
+     * Logout request.
      * @param  Request $request
      * @return json
      */
-    public function logout(Request $request) 
+    public function logout(Request $request)
     {
         $userId = $request->header('UserId');
         $userToken = $request->header('UserToken');
         $response = $this->users->deleteUserToken($userId, $userToken);
         if ($response) {
-            return $this->ApiSuccessResponse(array());
+            return $this->ApiSuccessResponse([]);
         } else {
             return $this->respondInternalError('Error in Logout');
         }
     }
-
 }

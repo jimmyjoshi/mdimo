@@ -1,4 +1,6 @@
-<?php namespace App\Models\KbHistory\Traits\Relationship;
+<?php
+
+namespace App\Models\KbHistory\Traits\Relationship;
 
 trait Relationship
 {

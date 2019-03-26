@@ -1,71 +1,69 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Transformers\StudentsTransformer;
-use App\Http\Controllers\Api\BaseApiController;
 use App\Repositories\Students\EloquentStudentsRepository;
 
 class APIStudentsController extends BaseApiController
 {
     /**
-     * Students Transformer
+     * Students Transformer.
      *
-     * @var Object
+     * @var object
      */
     protected $studentsTransformer;
 
     /**
-     * Repository
+     * Repository.
      *
-     * @var Object
+     * @var object
      */
     protected $repository;
 
     /**
-     * PrimaryKey
+     * PrimaryKey.
      *
      * @var string
      */
     protected $primaryKey = 'studentsId';
 
     /**
-     * __construct
-     *
+     * __construct.
      */
     public function __construct()
     {
-        $this->repository                       = new EloquentStudentsRepository();
+        $this->repository = new EloquentStudentsRepository();
         $this->studentsTransformer = new StudentsTransformer();
     }
 
     /**
-     * List of All Students
+     * List of All Students.
      *
      * @param Request $request
      * @return json
      */
     public function index(Request $request)
     {
-        $paginate   = $request->get('paginate') ? $request->get('paginate') : false;
-        $orderBy    = $request->get('orderBy') ? $request->get('orderBy') : 'id';
-        $order      = $request->get('order') ? $request->get('order') : 'ASC';
-        $items      = $paginate ? $this->repository->model->orderBy($orderBy, $order)->paginate($paginate)->items() : $this->repository->getAll($orderBy, $order);
+        $paginate = $request->get('paginate') ? $request->get('paginate') : false;
+        $orderBy = $request->get('orderBy') ? $request->get('orderBy') : 'id';
+        $order = $request->get('order') ? $request->get('order') : 'ASC';
+        $items = $paginate ? $this->repository->model->orderBy($orderBy, $order)->paginate($paginate)->items() : $this->repository->getAll($orderBy, $order);
 
-        if(isset($items) && count($items))
-        {
+        if (isset($items) && count($items)) {
             $itemsOutput = $this->studentsTransformer->transformCollection($items);
 
             return $this->successResponse($itemsOutput);
         }
 
         return $this->setStatusCode(400)->failureResponse([
-            'message' => 'Unable to find Students!'
+            'message' => 'Unable to find Students!',
             ], 'No Students Found !');
     }
 
     /**
-     * Create
+     * Create.
      *
      * @param Request $request
      * @return string
@@ -74,20 +72,19 @@ class APIStudentsController extends BaseApiController
     {
         $model = $this->repository->create($request->all());
 
-        if($model)
-        {
+        if ($model) {
             $responseData = $this->studentsTransformer->transform($model);
 
             return $this->successResponse($responseData, 'Students is Created Successfully');
         }
 
         return $this->setStatusCode(400)->failureResponse([
-            'reason' => 'Invalid Inputs'
+            'reason' => 'Invalid Inputs',
             ], 'Something went wrong !');
     }
 
     /**
-     * View
+     * View.
      *
      * @param Request $request
      * @return string
@@ -96,12 +93,10 @@ class APIStudentsController extends BaseApiController
     {
         $itemId = (int) hasher()->decode($request->get($this->primaryKey));
 
-        if($itemId)
-        {
+        if ($itemId) {
             $itemData = $this->repository->getById($itemId);
 
-            if($itemData)
-            {
+            if ($itemData) {
                 $responseData = $this->studentsTransformer->transform($itemData);
 
                 return $this->successResponse($responseData, 'View Item');
@@ -109,12 +104,12 @@ class APIStudentsController extends BaseApiController
         }
 
         return $this->setStatusCode(400)->failureResponse([
-            'reason' => 'Invalid Inputs or Item not exists !'
+            'reason' => 'Invalid Inputs or Item not exists !',
             ], 'Something went wrong !');
     }
 
     /**
-     * Edit
+     * Edit.
      *
      * @param Request $request
      * @return string
@@ -123,26 +118,24 @@ class APIStudentsController extends BaseApiController
     {
         $itemId = (int) hasher()->decode($request->get($this->primaryKey));
 
-        if($itemId)
-        {
+        if ($itemId) {
             $status = $this->repository->update($itemId, $request->all());
 
-            if($status)
-            {
-                $itemData       = $this->repository->getById($itemId);
-                $responseData   = $this->studentsTransformer->transform($itemData);
+            if ($status) {
+                $itemData = $this->repository->getById($itemId);
+                $responseData = $this->studentsTransformer->transform($itemData);
 
                 return $this->successResponse($responseData, 'Students is Edited Successfully');
             }
         }
 
         return $this->setStatusCode(400)->failureResponse([
-            'reason' => 'Invalid Inputs'
+            'reason' => 'Invalid Inputs',
         ], 'Something went wrong !');
     }
 
     /**
-     * Delete
+     * Delete.
      *
      * @param Request $request
      * @return string
@@ -151,20 +144,18 @@ class APIStudentsController extends BaseApiController
     {
         $itemId = (int) hasher()->decode($request->get($this->primaryKey));
 
-        if($itemId)
-        {
+        if ($itemId) {
             $status = $this->repository->destroy($itemId);
 
-            if($status)
-            {
+            if ($status) {
                 return $this->successResponse([
-                    'success' => 'Students Deleted'
+                    'success' => 'Students Deleted',
                 ], 'Students is Deleted Successfully');
             }
         }
 
         return $this->setStatusCode(404)->failureResponse([
-            'reason' => 'Invalid Inputs'
+            'reason' => 'Invalid Inputs',
         ], 'Something went wrong !');
     }
 }

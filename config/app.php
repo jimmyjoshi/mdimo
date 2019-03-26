@@ -118,7 +118,7 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
-    "hashKey"   => '5NnrMI7YxnXx5l62ZW2fcMn789bsnrIsPxz52fhuw0ugLviN3u',
+    'hashKey'   => '5NnrMI7YxnXx5l62ZW2fcMn789bsnrIsPxz52fhuw0ugLviN3u',
     /*
     |--------------------------------------------------------------------------
     | Logging Configuration
@@ -269,7 +269,7 @@ return [
 
         // JWT Auth
         'JWTAuth'   => Tymon\JWTAuthFacades\JWTAuth::class,
-        'JWTFactory' => Tymon\JWTAuthFacades\JWTFactory::class
+        'JWTFactory' => Tymon\JWTAuthFacades\JWTFactory::class,
     ],
 
 ];

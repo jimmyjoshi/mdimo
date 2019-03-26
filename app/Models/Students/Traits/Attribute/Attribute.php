@@ -1,6 +1,8 @@
-<?php namespace App\Models\Students\Traits\Attribute;
+<?php
 
-/**
+namespace App\Models\Students\Traits\Attribute;
+
+/*
  * Trait Attribute
  *
  * @author Anuj Jaha ( er.anujjaha@gmail.com )
@@ -17,7 +19,7 @@ trait Attribute
     {
         $id = $isAdmin ? $this->id : hasher()->encode($this->id);
 
-        return '<a href="'.route($prefix .'.'. $routes->editRoute, $id).'" class="btn btn-xs btn-primary"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Edit"></i></a> ';
+        return '<a href="'.route($prefix.'.'.$routes->editRoute, $id).'" class="btn btn-xs btn-primary"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Edit"></i></a> ';
     }
 
     /**
@@ -25,7 +27,7 @@ trait Attribute
      */
     public function getDeleteButtonAttribute($routes, $prefix = 'admin')
     {
-        return '<a href="'.route($prefix .'.'. $routes->deleteRoute, $this).'"
+        return '<a href="'.route($prefix.'.'.$routes->deleteRoute, $this).'"
                 data-method="delete"
                 data-trans-button-cancel="Cancel"
                 data-trans-button-confirm="Delete"
@@ -39,9 +41,9 @@ trait Attribute
     public function getActionButtonsAttribute()
     {
         $repository = new EloquentStudentsRepository;
-        $routes     = $repository->getModuleRoutes();
+        $routes = $repository->getModuleRoutes();
 
-        return $this->getEditButtonAttribute($routes, $repository->clientRoutePrefix) . $this->getDeleteButtonAttribute($routes, $repository->clientRoutePrefix);
+        return $this->getEditButtonAttribute($routes, $repository->clientRoutePrefix).$this->getDeleteButtonAttribute($routes, $repository->clientRoutePrefix);
     }
 
     /**
@@ -50,8 +52,8 @@ trait Attribute
     public function getAdminActionButtonsAttribute()
     {
         $repository = new EloquentStudentsRepository;
-        $routes     = $repository->getModuleRoutes();
+        $routes = $repository->getModuleRoutes();
 
-        return $this->getEditButtonAttribute($routes, $repository->adminRoutePrefix, true) . $this->getDeleteButtonAttribute($routes, $repository->adminRoutePrefix);
+        return $this->getEditButtonAttribute($routes, $repository->adminRoutePrefix, true).$this->getDeleteButtonAttribute($routes, $repository->adminRoutePrefix);
     }
 }
