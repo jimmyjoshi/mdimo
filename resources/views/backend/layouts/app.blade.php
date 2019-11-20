@@ -18,12 +18,14 @@
 
         <!-- Check if the language is set to RTL, so apply the RTL layouts -->
         <!-- Otherwise apply the normal LTR layouts -->
-        @langRTL
+        {{--@langRTL
             {{ Html::style(getRtlCss(mix('css/backend.css'))) }}
         @else
             {{ Html::style(mix('css/backend.css')) }}
-        @endif
+        @endif--}}
 
+        {{ Html::style(mix('css/backend.css')) }}
+        
         @yield('after-styles')
 
         <!-- Html5 Shim and Respond.js IE8 support of Html5 elements and media queries -->
@@ -54,7 +56,7 @@
                     @yield('page-header')
 
                     {{-- Change to Breadcrumbs::render() if you want it to error to remind you to create the breadcrumbs for the given route --}}
-                    {!! Breadcrumbs::renderIfExists() !!}
+                    {{-- Breadcrumbs::renderIfExists() --}}
                 </section>
 
                 <!-- Main content -->
