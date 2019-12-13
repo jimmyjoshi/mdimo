@@ -47,6 +47,12 @@ return [
                 ],
             ],
 
+            'permissions' => [
+                'create'     => 'Create Permission',
+                'edit'       => 'Edit Permission',
+                'management' => 'Permission Management',
+            ],
+
             'users' => [
                 'active'              => 'Active Users',
                 'all_permissions'     => 'All Permissions',

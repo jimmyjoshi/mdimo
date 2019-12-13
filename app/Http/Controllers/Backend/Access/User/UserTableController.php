@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend\Access\User;
 
 use App\Http\Controllers\Controller;
-use Yajra\DataTables\Facades\Datatables;
+use Datatables;
 use App\Repositories\Backend\Access\User\UserRepository;
 use App\Http\Requests\Backend\Access\User\ManageUserRequest;
 
@@ -45,7 +45,7 @@ class UserTableController extends Controller
             ->addColumn('actions', function ($user) {
                 return $user->action_buttons;
             })
-            ->withTrashed()
+            /*->withTrashed()*/
             ->make(true);
     }
 }

@@ -18,12 +18,14 @@
 
         <!-- Check if the language is set to RTL, so apply the RTL layouts -->
         <!-- Otherwise apply the normal LTR layouts -->
-        @langRTL
+        {{--@langRTL
             {{ Html::style(getRtlCss(mix('css/frontend.css'))) }}
         @else
             {{ Html::style(mix('css/frontend.css')) }}
-        @endif
+        @endif--}}
 
+        {{ Html::style(mix('css/frontend.css')) }}
+        
         @yield('after-styles')
 
         <!-- Scripts -->

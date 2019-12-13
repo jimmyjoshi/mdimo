@@ -74,5 +74,6 @@
         {{ Html::script(mix('js/backend.js')) }}
         <script type="text/javascript" src="{!! asset('js/custom/custom.js') !!}"></script>
         @yield('after-scripts')
+        @yield('scripts')
     </body>
 </html>

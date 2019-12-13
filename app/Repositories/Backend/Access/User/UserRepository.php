@@ -103,6 +103,10 @@ class UserRepository extends BaseRepository
         if ($trashed == 'true') {
             return $dataTableQuery->onlyTrashed();
         }
+        else
+        {
+            $dataTableQuery->withTrashed();
+        }
 
         // active() is a scope on the UserScope trait
         return $dataTableQuery->active($status);
