@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 use Tymon\JWTAuthExceptions\JWTException;
 use App\Http\Transformers\UserTransformer;
 
-class UsersController extends Controller
+class UsersController extends BaseApiController
 {
     protected $userTransformer;
 
@@ -50,7 +50,34 @@ class UsersController extends Controller
         $responseData = $this->userTransformer->transform((object) $userData);
 
         // if no errors are encountered we can return a JWT
-        return response()->json($responseData);
+        return $this->successResponse($responseData);
+    }
+
+    /**
+     * Login With Phone
+     *
+     * @param Request $request
+     * @return type
+     */
+    public function loginWithPhone(Request $request)
+    {
+        if($request->has('phone') && $request->get('phone'))
+        {
+            $user = User::where('phone', $request->get('phone'))->first();
+
+            if(isset($user) && isset($user->id))
+            {
+                $token          = JWTAuth::fromUser($user);
+                $userData       = array_merge($user->toArray(), ['token' => $token]);
+                $responseData   = $this->userTransformer->transform((object) $userData);
+                
+                return $this->successResponse($responseData);
+            }
+        }
+
+        return $this->failureResponse([
+            'message' => 'No user found for given Phone Number',
+        ], 'No User Found!');
     }
 
     /**

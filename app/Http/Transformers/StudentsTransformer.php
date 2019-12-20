@@ -17,7 +17,7 @@ class StudentsTransformer extends Transformer
         }
 
         return [
-            'studentsId' => (int) $item->id, 'studentsName' =>  $item->name, 'studentsAge' =>  $item->age, 'studentsStd' =>  $item->std,
+            'studentsId' => (int) $item->id, 'studentsName' =>  $item->name, 'studentsAge' =>  $item->age
         ];
     }
 }

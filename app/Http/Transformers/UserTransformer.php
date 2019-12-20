@@ -1,16 +1,22 @@
 <?php
 
 namespace App\Http\Transformers;
+use URL;
 
 class UserTransformer extends Transformer
 {
     public function transform($data)
     {
         return [
-            'userId'    => $data->id,
-            'userToken' => $data->token,
-            'name'      => $this->nulltoBlank($data->name),
-            'email'     => $this->nulltoBlank($data->email),
+            'user_id'       => (int) $data->id,
+            'user_token'    => $data->token,
+            'name'          => $this->nulltoBlank($data->name),
+            'email'         => $this->nulltoBlank($data->email),
+            'user_type'     => (int) $data->user_type,
+            'phone'         => $this->nulltoBlank($data->phone),
+            'gender'        => $this->nulltoBlank($data->gender),
+            'birthdate'     => $this->nulltoBlank($data->birthdate),
+            'profile_pic'   => URL('img/user/'. $data->profile_pic)
         ];
     }
 
