@@ -2,6 +2,7 @@
 
 namespace App\Models\Access\User;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Access\User\Traits\UserAccess;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +15,7 @@ use App\Models\Access\User\Traits\Relationship\UserRelationship;
 /**
  * Class User.
  */
-class User extends Authenticatable
+class User extends Authenticatable  implements JWTSubject
 {
     use UserScope,
         UserAccess,
@@ -70,5 +71,25 @@ class User extends Authenticatable
         $user = $user ? $user : $this;
 
         return $user->first_name.' '.$user->last_name;
+    }
+
+    /*
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
