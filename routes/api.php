@@ -28,6 +28,9 @@ Route::group(['namespace' => 'Api'], function () {
     Route::post('removeotp', 'UsersController@removeOtp')->name('api.removeotp');*/
 });
 
+Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function () {
+	Route::post('update-profile', 'UsersController@updateProfile')->name('api.update-profile');
+});
 Route::group(['middleware' => 'jwt.customauth'], function () {
     includeRouteFiles(__DIR__.'/Api/');
 });

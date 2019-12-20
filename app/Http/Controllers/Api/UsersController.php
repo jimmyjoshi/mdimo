@@ -10,6 +10,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuthExceptions\JWTException;
 use App\Http\Transformers\UserTransformer;
+use Storage;
+use File;
 
 class UsersController extends BaseApiController
 {
@@ -95,5 +97,69 @@ class UsersController extends BaseApiController
         } else {
             return $this->respondInternalError('Error in Logout');
         }
+    }
+
+    /**
+     * Update Profile.
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = access()->user();
+
+        if(isset($user->id))
+        {
+            if($request->has('name') && $request->get('name'))
+            {
+                $user->name = $request->get('name');
+            }
+
+            if($request->has('phone') && $request->get('phone'))
+            {
+                $user->phone = $request->get('phone');
+            }
+
+            if($request->has('email') && $request->get('email'))
+            {
+                $user->email = $request->get('email');
+            }
+
+            if($request->has('gender') && $request->get('gender'))
+            {
+                $user->gender = $request->get('gender');
+            }
+
+            if($request->has('birthdate') && $request->get('birthdate'))
+            {
+                $user->birthdate = date('Y-m-d', strtotime($request->get('birthdate')));
+            }
+
+            if($request->file('profile_pic'))
+            {
+                $uploadedFile   = $request->file('profile_pic'); 
+                $filename       = time().$uploadedFile->getClientOriginalName();
+                $filePath       = public_path() . '/img/user/';
+                
+                if($uploadedFile->move($filePath, $filename))
+                {
+                    $user->profile_pic = $filename;
+                }
+            }
+
+            if($user->save())
+            {
+                $token          = JWTAuth::fromUser($user);
+                $userData       = array_merge($user->toArray(), ['token' => $token]);
+                $responseData   = $this->userTransformer->transform((object) $userData);
+                return $this->successResponse($responseData, 'User updated Successfully');
+            }
+        }
+
+
+        return $this->failureResponse([
+            'reason' => 'Invalid Input, Please provide valid inputs',
+        ], 'Something went wrong !');
     }
 }
