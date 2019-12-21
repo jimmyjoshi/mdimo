@@ -26,8 +26,8 @@ class ItemTransformer extends Transformer
             "category_title"    => isset($item->category) ? $item->category['title'] : '',
             "title"             => $this->nulltoBlank($item->title),
             "description"       => $this->nulltoBlank($item->description),
-            "price_with_tax"    => (float) number_format($item->price_with_tax, 2),
-            "price_without_tax" => (float) number_format($item->price_without_tax, 2),
+            "price_with_tax"    => number_format($item->price_with_tax, 2),
+            "price_without_tax" => number_format($item->price_without_tax, 2),
             "image"             => URL('img/item/'. $item->image)
         ];
     }
