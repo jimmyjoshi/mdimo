@@ -69,6 +69,19 @@ class UsersController extends BaseApiController
 
             if(isset($user) && isset($user->id))
             {
+                if($request->has('latitude') && $request->has('longitude'))
+                {
+                    $user->latitude     = $request->get('latitude');
+                    $user->longitude    = $request->get('longitude');
+                }
+
+                if($request->has('device_token') && $request->has('device_token'))
+                {
+                    $user->device_token = $request->get('device_token');
+                }
+
+                $user->save();
+
                 $token          = JWTAuth::fromUser($user);
                 $userData       = array_merge($user->toArray(), ['token' => $token]);
                 $responseData   = $this->userTransformer->transform((object) $userData);
@@ -157,6 +170,41 @@ class UsersController extends BaseApiController
             }
         }
 
+
+        return $this->failureResponse([
+            'reason' => 'Invalid Input, Please provide valid inputs',
+        ], 'Something went wrong !');
+    }
+
+    /**
+     * Update Location.
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function updateLocation(Request $request)
+    {
+        $user = access()->user();
+
+        if(isset($user->id))
+        {
+            if($request->has('latitude') && $request->has('longitude'))
+            {
+                $location = [
+                    'latitude'  => $request->get('latitude'),
+                    'longitude' => $request->get('longitude')
+                ];
+
+                $stauts = User::where('id', $user->id)->update($location);
+
+                if($stauts)
+                {
+                    return $this->successResponse([
+                        'message' => 'Location updated'
+                    ], 'User Location updated Successfully');
+                }
+            }
+        }
 
         return $this->failureResponse([
             'reason' => 'Invalid Input, Please provide valid inputs',

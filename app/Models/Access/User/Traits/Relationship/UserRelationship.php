@@ -5,6 +5,7 @@ namespace App\Models\Access\User\Traits\Relationship;
 use App\Models\Event\Event;
 use App\Models\System\Session;
 use App\Models\Access\User\SocialLogin;
+use App\Models\Store\Store;
 
 /**
  * Class UserRelationship.
@@ -43,5 +44,13 @@ trait UserRelationship
     public function events()
     {
         return $this->hasMany(Event::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function store()
+    {
+        return $this->hasOne(Store::class, 'user_id');
     }
 }
