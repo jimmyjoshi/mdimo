@@ -27,7 +27,7 @@ class APICategoryController extends BaseApiController
      *
      * @var string
      */
-    protected $primaryKey = 'categoryId';
+    protected $primaryKey = 'category_id';
 
     /**
      * __construct
@@ -35,8 +35,8 @@ class APICategoryController extends BaseApiController
      */
     public function __construct()
     {
-        $this->repository                       = new EloquentCategoryRepository();
-        $this->categoryTransformer = new CategoryTransformer();
+        $this->repository           = new EloquentCategoryRepository();
+        $this->categoryTransformer  = new CategoryTransformer();
     }
 
     /**

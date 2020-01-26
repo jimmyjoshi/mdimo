@@ -17,14 +17,14 @@ class Item extends BaseModel
      * Database Table
      *
      */
-    protected $table = "data_items";
+    protected $table = "data_food_item_detail";
 
     /**
      * Fillable Database Fields
      *
      */
     protected $fillable = [
-        "id", "user_id", "store_id", "category_id", "title", "description", "price_with_tax", "price_without_tax", "image", "is_active", "created_at", "updated_at", 
+        "id", "user_id", "enterprise_id", "food_category_id", "food_short_name", "food_description", "price_with_tax", "price_without_tax", "food_image", "is_active", "created_at", "updated_at", 
     ];
 
     /**

@@ -13,6 +13,7 @@ class UserTransformer extends Transformer
             'name'          => $this->nulltoBlank($data->name),
             'email'         => $this->nulltoBlank($data->email),
             'user_type'     => (int) $data->user_type,
+            'country_code'  => $this->nulltoBlank($data->country_code),
             'phone'         => $this->nulltoBlank($data->phone),
             'gender'        => $this->nulltoBlank($data->gender),
             'birthdate'     => $this->nulltoBlank($data->birthdate),

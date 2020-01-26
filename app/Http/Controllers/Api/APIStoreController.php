@@ -75,8 +75,8 @@ class APIStoreController extends BaseApiController
         $user   = access()->user();
         $model  = false;
         $input  = array_merge($request->all(), [
-            'user_id'   => $user->id,
-            'image'     => 'default.png'
+            'user_id'                       => $user->id,
+            'enterprise_display_image'      => 'enterprise_default_display.png'
         ]);
         
         $uploadedFile = $request->file('image'); 
@@ -88,7 +88,7 @@ class APIStoreController extends BaseApiController
             
             if($uploadedFile->move($filePath, $filename))
             {
-                $input['image'] = $filename;
+                $input['enterprise_display_image'] = $filename;
             }
         }
 

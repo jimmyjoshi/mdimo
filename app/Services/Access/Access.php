@@ -3,6 +3,8 @@
 namespace App\Services\Access;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use App\Models\QueueMember\QueueMember;
+use App\Models\Queue\Queue;
 
 /**
  * Class Access.
@@ -149,5 +151,27 @@ class Access
     public function hasPermissions($permissions, $needsAll = false)
     {
         return $this->allowMultiple($permissions, $needsAll);
+    }
+
+    public function getQueueNumber($storeId, $date)
+    {
+        $date   = date('Y-m-d', strtotime($date));
+        $queue  = Queue::with('members')->where([
+            'store_id'  => $storeId,
+            'qdate'     => $date
+        ])->first();
+
+        if(isset($queue) && isset($queue->id))
+        {
+            $lastQueueMember = QueueMember::where('queue_id', $queue->id)->orderBy('queue_number', 'desc')->first();
+            
+            if(isset($lastQueueMember) && isset($lastQueueMember->id))
+            {
+                $newNumber = $lastQueueMember->queue_number + 1;
+                return $newNumber;
+            }
+        }
+
+        return 1;
     }
 }

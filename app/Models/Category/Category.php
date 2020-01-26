@@ -17,7 +17,7 @@ class Category extends BaseModel
      * Database Table
      *
      */
-    protected $table = "data_categories";
+    protected $table = "data_food_category";
 
     /**
      * Fillable Database Fields

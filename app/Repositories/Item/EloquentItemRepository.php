@@ -272,9 +272,9 @@ class EloquentItemRepository extends DbRepository
      */
     public function getAll($orderBy = 'id', $sort = 'asc')
     {
-        if(request()->get('store_id'))
+        if(request()->get('enterprise_id'))
         {
-            return $this->model->with('category')->where('store_id', request()->get('store_id'))
+            return $this->model->with('category')->where('enterprise_id', request()->get('enterprise_id'))
                 ->orderBy($orderBy, $sort)
                 ->get();
         }

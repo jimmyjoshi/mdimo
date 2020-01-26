@@ -13,7 +13,8 @@ class CreateTableDataCategories extends Migration
      */
     public function up()
     {
-        Schema::create('data_categories', function (Blueprint $table) {
+        Schema::create('data_categories', function (Blueprint $table)
+        {
             $table->bigIncrements('id');
             $table->string('title')->nullable();
             $table->text('description')->nullable();

@@ -67,6 +67,20 @@ class UsersController extends BaseApiController
         {
             $user = User::where('phone', $request->get('phone'))->first();
 
+            if(!isset($user))
+            {
+                $user = User::create([
+                    'phone' => $request->get('phone'),
+                    'name'  => $request->has('name') ? $request->get('name') : 'John doe',
+                    'email' => $request->has('email') ? $request->get('email') : 'default@default.com',
+                    'password' => bcrypt('1234'),
+                    'status'    => 1,
+                    'confirmed' => 1,
+                    'age'       => 18,
+                    'user_type' => 0
+                ]);
+            }
+
             if(isset($user) && isset($user->id))
             {
                 if($request->has('latitude') && $request->has('longitude'))
@@ -132,6 +146,11 @@ class UsersController extends BaseApiController
             if($request->has('phone') && $request->get('phone'))
             {
                 $user->phone = $request->get('phone');
+            }
+
+            if($request->has('country_code') && $request->get('country_code'))
+            {
+                $user->country_code = $request->get('country_code');
             }
 
             if($request->has('email') && $request->get('email'))

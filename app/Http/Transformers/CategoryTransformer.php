@@ -19,7 +19,9 @@ class CategoryTransformer extends Transformer
         }
 
         return [
-            "categoryId" => (int) $item->id, "categoryTitle" =>  $item->title, "categoryDescription" =>  $item->description, "categoryImage" =>  $item->image, "categoryIsActive" =>  $item->is_active, "categoryCreatedAt" =>  $item->created_at, "categoryUpdatedAt" =>  $item->updated_at, 
+            "category_id"   => (int) $item->id,
+            "title"         => $item->food_short_name, 
+            "description"   => $this->nulltoBlank($item->food_description)
         ];
     }
 }

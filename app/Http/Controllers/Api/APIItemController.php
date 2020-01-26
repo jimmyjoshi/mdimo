@@ -76,7 +76,7 @@ class APIItemController extends BaseApiController
         $model  = false;
         $input  = array_merge($request->all(), [
             'user_id'   => $user->id,
-            'image'     => 'default.png'
+            'food_image'     => 'default.png'
         ]);
         
         $uploadedFile = $request->file('image'); 
@@ -88,7 +88,7 @@ class APIItemController extends BaseApiController
             
             if($uploadedFile->move($filePath, $filename))
             {
-                $input['image'] = $filename;
+                $input['food_image'] = $filename;
             }
         }
 

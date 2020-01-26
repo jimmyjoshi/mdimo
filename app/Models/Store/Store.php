@@ -17,7 +17,7 @@ class Store extends BaseModel
      * Database Table
      *
      */
-    protected $table = "data_user_stores";
+    protected $table = "data_enterprise_detail";
 
     /**
      * Fillable Database Fields
