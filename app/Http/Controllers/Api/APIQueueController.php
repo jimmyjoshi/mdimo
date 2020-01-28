@@ -47,9 +47,10 @@ class APIQueueController extends BaseApiController
      */
     public function index(Request $request)
     {
-        if($request->has('store_id') && $request->has('today'))
+        if($request->has('store_id'))
         {
-            $queueData = $this->repository->getQueueWithMembers($request->get('store_id'), $request->get('today'));
+            $today      = $request->has('today') ? $request->get('today') : date('Y-m-d');
+            $queueData  = $this->repository->getQueueWithMembers($request->get('store_id'), $today);
 
             if($queueData && isset($queueData->id))
             {
