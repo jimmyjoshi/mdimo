@@ -45,7 +45,7 @@ class UsersController extends BaseApiController
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 
-        $user = Auth::user()->toArray();
+        $user = Auth::user()->with('store')->toArray();
 
         $userData = array_merge($user, ['token' => $token]);
 
@@ -65,7 +65,7 @@ class UsersController extends BaseApiController
     {
         if($request->has('phone') && $request->get('phone'))
         {
-            $user = User::where('phone', $request->get('phone'))->first();
+            $user = User::with('store')->where('phone', $request->get('phone'))->first();
 
             if(!isset($user))
             {

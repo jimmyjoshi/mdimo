@@ -7,17 +7,22 @@ class UserTransformer extends Transformer
 {
     public function transform($data)
     {
+        $store = isset($data->store) ? (object) $data->store : false;
+        
         return [
             'user_id'       => (int) $data->id,
             'user_token'    => $data->token,
             'name'          => $this->nulltoBlank($data->name),
             'email'         => $this->nulltoBlank($data->email),
-            'user_type'     => (int) $data->user_type,
+            'user_type'     => isset($store) && isset($store->id) ? 1 : 0,
             'country_code'  => $this->nulltoBlank($data->country_code),
             'phone'         => $this->nulltoBlank($data->phone),
             'gender'        => $this->nulltoBlank($data->gender),
             'birthdate'     => $this->nulltoBlank($data->birthdate),
-            'profile_pic'   => URL('img/user/'. $data->profile_pic)
+            'profile_pic'   => URL('img/user/'. $data->profile_pic),
+            'has_store'     => isset($store) && isset($store->id) ? 1 : 0,
+            'store_id'      => isset($store) && isset($store->id) ? $store->id : '',
+            'enterprise_id' => isset($store) && isset($store->id) ? $store->id : '',
         ];
     }
 
