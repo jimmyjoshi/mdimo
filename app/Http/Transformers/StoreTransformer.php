@@ -20,7 +20,7 @@ class StoreTransformer extends Transformer
         }
 
         return [
-            "store_id"      => (int) $item->id, 
+            "enterprise_id" => (int) $item->id, 
             "user_id"       => $item->user_id, 
             "title"         => $item->title, 
             "description"   => $item->description, 
@@ -28,9 +28,10 @@ class StoreTransformer extends Transformer
             "city"          => $item->city, 
             "state"         => $item->state, 
             "zip"           => $item->zip, 
-            "image"         => URL('img/store/'. $item->image), 
+            "country"       => $this->nullToBlank($item->country), 
+            "image"         => URL('img/store/'. $item->enterprise_display_image), 
             "latitude"      => $item->latitude, 
-            "longitude"     =>  $item->longitude
+            "longitude"     => $item->longitude
         ];
     }
 }
