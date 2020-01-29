@@ -73,16 +73,19 @@ class APIQueueController extends BaseApiController
      */
     public function create(Request $request)
     {
-        if($request->has('store_id') && $request->has('today'))
+        $today = $request->has('today') ? $request->get('today') : date("Y-m-d");
+        
+        if($request->has('store_id'))
         {
             $input = $request->all();
+            $input['today'] = $today;
             /*$input = array_merge($request->all(), [
                 'user_id' => access()->user()->id
             ]);*/
             $model = $this->repository->create($input);
         }
 
-        if($model)
+        if(isset($model))
         {
             $queueData    = $this->repository->getQueueWithMembers($model->store_id, $model->qdate);
             $responseData = $this->queueTransformer->transform($queueData);
