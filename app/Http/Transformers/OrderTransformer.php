@@ -18,7 +18,9 @@ class OrderTransformer extends Transformer
             $item = (object)$item;
         }
 
-        $itemDetails = [];
+        $itemDetails        = [];
+        $totalWithTax       = 0;
+        $totalWithOutTax    = 0;
 
         if($item->order_details)
         {
@@ -37,15 +39,20 @@ class OrderTransformer extends Transformer
                     "image"             => URL('img/item/'. $detail->image)
 
                 ];
+
+                $totalWithTax       = $totalWithTax + $detail->price_with_tax;
+                $totalWithOutTax    = $totalWithOutTax + $detail->price_without_tax;
             }
         }
 
         return [
-            "order_id"      => (int) $item->id,
-            "user_id"       => $item->user_id, 
-            "store_id"      => $item->store_id, 
-            "queue_id"      => $item->queue_id,
-            "order_items"   => $itemDetails
+            "order_id"          => (int) $item->id,
+            "user_id"           => $item->user_id, 
+            "store_id"          => $item->store_id, 
+            "queue_id"          => $item->queue_id,
+            "total_with_tax"    => $totalWithTax,
+            "total_without_tax" => $totalWithOutTax,
+            "order_items"       => $itemDetails,
         ];
     }
 }
