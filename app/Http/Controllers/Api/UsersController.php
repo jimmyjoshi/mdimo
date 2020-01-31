@@ -10,6 +10,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuthExceptions\JWTException;
 use App\Http\Transformers\UserTransformer;
+use App\Models\Queue\Queue;
 use Storage;
 use File;
 

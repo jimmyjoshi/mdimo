@@ -46,4 +46,35 @@ class QueueTransformer extends Transformer
             "members"       => $memberData
         ];
     }
+
+    /**
+     * Transform My Queue
+     *
+     * @param object
+     * @return array
+     */
+    public function transformMyQueue($queueData)
+    {
+        $queue  = $queueData->queue;
+        $user   = $queueData->user;
+
+        return [
+            "queue_id"      => (int) $queueData->id, 
+            "user_id"       => $queueData->user_id, 
+            "enterprise_id" => $queueData->store_id, 
+            "title"         => $queue->title, 
+            "qdate"         => date('m/d/Y', strtotime($queue->qdate)),
+            'name'          => $user->name,
+            'phone'         => $user->phone,
+            'member_count'  => $queueData->member_count,
+            'queue_number'  => $queueData->queue_number,
+            "members"        => [
+                'user_id'       => $user->id,
+                'name'          => $user->name,
+                'phone'         => $user->phone,
+                'member_count'  => $queueData->member_count,
+                'queue_number'  => $queueData->queue_number
+            ]
+        ];
+    }
 }

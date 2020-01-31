@@ -8,5 +8,7 @@ Route::group(['namespace' => 'Api'], function()
     Route::post('queue/delete', 'APIQueueController@delete')->name('queue.delete');
     Route::post('queue/remove-member', 'APIQueueController@removeMember')->name('queue.remove-member');
     Route::post('queue/process-member', 'APIQueueController@processMember')->name('queue.process-member');
+
+    Route::post('queue/my-position', 'APIQueueController@getMyQueue')->name('queue.get-my-queue');
 });
 ?>

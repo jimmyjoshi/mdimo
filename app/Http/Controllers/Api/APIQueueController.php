@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Transformers\QueueTransformer;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Repositories\Queue\EloquentQueueRepository;
+use App\Models\QueueMember\QueueMember;
 
 class APIQueueController extends BaseApiController
 {
@@ -228,5 +229,37 @@ class APIQueueController extends BaseApiController
         return $this->setStatusCode(404)->failureResponse([
             'reason' => 'Invalid Inputs or No Member found in Queue'
         ], 'Something went wrong !');
+    }
+
+    /**
+     * Get My Queue.
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function getMyQueue(Request $request)
+    {
+        $user = access()->user();
+
+        if(isset($user->id) && $request->has('enterprise_id'))
+        {
+            $myQueue = QueueMember::with('queue', 'user')->where([
+                'user_id'   => $user->id,
+                'store_id'  => $request->get('enterprise_id')
+            ])
+            ->where('processed_at', null)
+            ->first();
+
+            if(isset($myQueue) && isset($myQueue->id))
+            {
+                $responseData = $this->queueTransformer->transformMyQueue($myQueue);
+                return $this->successResponse($responseData);
+            }
+        }
+
+
+        return $this->failureResponse([
+            'reason' => 'No Queue found',
+        ], 'No Queue found');
     }
 }
