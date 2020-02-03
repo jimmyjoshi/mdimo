@@ -205,6 +205,8 @@ return [
         //Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         App\Providers\HasherServiceProvider::class,
+
+        LaravelQRCode\Providers\QRCodeServiceProvider::class,
     ],
 
     /*
@@ -272,6 +274,8 @@ return [
         'JWTAuth'   => Tymon\JWTAuthFacades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuthFacades\JWTFactory::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'QRCode' => LaravelQRCode\Facades\QRCode::class,     
+
     ],
 
 ];

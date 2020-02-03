@@ -208,6 +208,7 @@ class EloquentOrderRepository extends DbRepository
     public function create($input)
     {
         $userId     = $input['user_id'];
+        $categoryId = $input['category_id'];
         $queueId    = $input['queue_id'];
         $storeId    = $input['store_id'];
         $order      = $this->getOrderByQueueId($userId, $storeId, $queueId);
@@ -228,10 +229,19 @@ class EloquentOrderRepository extends DbRepository
                 'user_id'   => $userId,
                 'store_id'  => $storeId,
                 'queue_id'  => $queueId,
-                'title'     => 'New Order at ' . date('Y-m-d')
+                'category_id' => $categoryId,
+                'title'     => 'New Order at ' . date('Y-m-d'),
+                'image'     => 'default.png'
             ];
 
             $order = $this->model->create($orderData);
+
+            $order->qr_code_image = $order->id .'.png';
+            $order->save();
+
+            \QRCode::text($order->id)
+                ->setOutfile(public_path() . '/order-images/'. $order->id .'.png')
+                ->png();
 
             if(isset($order) && $order->id)
             {
@@ -428,12 +438,12 @@ class EloquentOrderRepository extends DbRepository
                 $orderItems = [
                     'order_id'          => $order->id,
                     'item_id'           => $item->id,
-                    'category_id'       => $item->category_id,
-                    'title'             => $item->title,
+                    'category_id'       => $item->food_category_id,
+                    'title'             => $item->food_short_name,
                     'qty'               => $input['qty'],
                     'price_with_tax'    => $item->price_with_tax,
                     'price_without_tax' => $item->price_without_tax,
-                    'image'             => $item->image
+                    'image'             => $item->food_image
                 ];
 
                 return OrderDetail::create($orderItems);

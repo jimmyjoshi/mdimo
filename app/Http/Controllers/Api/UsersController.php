@@ -184,6 +184,7 @@ class UsersController extends BaseApiController
             if($user->save())
             {
                 $token          = JWTAuth::fromUser($user);
+                
                 $userData       = array_merge($user->toArray(), ['token' => $token]);
                 $responseData   = $this->userTransformer->transform((object) $userData);
                 return $this->successResponse($responseData, 'User updated Successfully');

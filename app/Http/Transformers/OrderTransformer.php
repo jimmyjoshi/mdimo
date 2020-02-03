@@ -2,6 +2,7 @@
 namespace App\Http\Transformers;
 
 use App\Http\Transformers;
+use URL;
 
 class OrderTransformer extends Transformer
 {
@@ -52,6 +53,7 @@ class OrderTransformer extends Transformer
             "total_with_tax"    => $totalWithTax,
             "total_without_tax" => $totalWithOutTax,
             "order_items"       => $itemDetails,
+            "order_qr_image"    => URL('order-images/'. $item->qr_code_image)
         ];
     }
 }

@@ -79,6 +79,8 @@ class APIOrderController extends BaseApiController
             $order      = $this->repository->getOrderWithDetails($model->id);
             $response   = $this->orderTransformer->transform($order);
 
+            
+
             return $this->successResponse($response, 'Order is Created Successfully');
         }
 
