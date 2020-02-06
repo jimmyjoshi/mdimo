@@ -211,6 +211,22 @@ class UsersController extends BaseApiController
     }
 
     /**
+     * Me.
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function me(Request $request)
+    {
+        $user           = access()->user();
+        $token          = JWTAuth::fromUser($user);
+        $userData       = array_merge($user->toArray(), ['token' => $token]);
+        $responseData   = $this->userTransformer->transform((object) $userData);
+        
+        return $this->successResponse($responseData, 'User updated Successfully');
+    }
+
+    /**
      * Update User Profile.
      *
      * @param Request $request

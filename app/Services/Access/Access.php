@@ -5,6 +5,7 @@ namespace App\Services\Access;
 use Illuminate\Contracts\Auth\Authenticatable;
 use App\Models\QueueMember\QueueMember;
 use App\Models\Queue\Queue;
+use App\Models\Order\Order;
 
 /**
  * Class Access.
@@ -173,5 +174,24 @@ class Access
         }
 
         return 1;
+    }
+
+    public function getUserLastOrderId($storeId = null)
+    {
+        $userId = $this->user()->id;
+        $order  = Order::where([
+            'store_id'  => $storeId,
+            'user_id'   => $userId
+        ])
+        ->orderBy('id', 'desc')
+        ->first();
+
+
+        if(isset($order) && isset($order->id))
+        {
+            return $order->id;
+        }
+
+        return '';
     }
 }

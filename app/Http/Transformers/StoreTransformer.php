@@ -31,7 +31,8 @@ class StoreTransformer extends Transformer
             "country"       => $this->nullToBlank($item->country), 
             "image"         => URL('img/store/'. $item->enterprise_display_image), 
             "latitude"      => $item->latitude, 
-            "longitude"     => $item->longitude
+            "longitude"     => $item->longitude,
+            "last_order_id" => access()->getUserLastOrderId($item->id)
         ];
     }
 }
