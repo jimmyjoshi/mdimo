@@ -10,6 +10,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuthExceptions\JWTException;
 use App\Http\Transformers\UserTransformer;
+use App\Models\QueueMember\QueueMember;
 use App\Models\Queue\Queue;
 use Storage;
 use File;
@@ -67,6 +68,18 @@ class UsersController extends BaseApiController
         if($request->has('phone') && $request->get('phone'))
         {
             $user = User::with('store')->where('phone', $request->get('phone'))->first();
+
+            if(isset($user) && $request->has('customer_id') && $request->get('customer_id'))
+            {
+                if($user->customer_id != $request->get('customer_id'))                
+                {
+                    return $this->failureResponse([
+                        'message' => 'Invalid Customer Id or Not Valid Cusotmer',
+                    ], 'Invalid Customer Id or Not Valid Cusotmer');
+                }
+
+            }
+
 
             if(!isset($user))
             {
@@ -192,6 +205,76 @@ class UsersController extends BaseApiController
         }
 
 
+        return $this->failureResponse([
+            'reason' => 'Invalid Input, Please provide valid inputs',
+        ], 'Something went wrong !');
+    }
+
+    /**
+     * Update User Profile.
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function updateUserProfile(Request $request)
+    {
+        if($request->has('user_id') && $request->has('enterprise_id'))
+        {
+            $user = User::where('id', $request->get('user_id'))->first();
+
+            if(isset($user) && isset($user->id))
+            {
+                if($request->has('name') && $request->get('name'))
+                {
+                    $user->name = $request->get('name');
+                }
+
+                if($request->has('phone') && $request->get('phone'))
+                {
+                    $user->phone = $request->get('phone');
+                }
+
+                if($request->has('country_code') && $request->get('country_code'))
+                {
+                    $user->country_code = $request->get('country_code');
+                }
+
+                /*if($request->has('email') && $request->get('email'))
+                {
+                    $user->email = $request->get('email');
+                }
+
+                if($request->has('gender') && $request->get('gender'))
+                {
+                    $user->gender = $request->get('gender');
+                }
+
+                if($request->has('birthdate') && $request->get('birthdate'))
+                {
+                    $user->birthdate = date('Y-m-d', strtotime($request->get('birthdate')));
+                }*/
+
+                if($user->save())
+                {
+                    if($request->has('member_count'))
+                    {
+                        $queueMember = QueueMember::where([
+                            'store_id'  => $request->get('enterprise_id'),
+                            'user_id'   => $request->get('user_id')
+                        ])->first();
+
+                        if(isset($queueMember) && isset($queueMember->id))
+                        {
+                            $queueMember->member_count = $request->get('member_count');
+                            $queueMember->save();
+                        }
+                    }
+
+                    return $this->successResponse([], 'User updated Successfully');
+                }
+            }
+
+        }
         return $this->failureResponse([
             'reason' => 'Invalid Input, Please provide valid inputs',
         ], 'Something went wrong !');

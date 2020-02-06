@@ -30,6 +30,7 @@ Route::group(['namespace' => 'Api'], function () {
 
 Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function () {
 	Route::post('update-profile', 'UsersController@updateProfile')->name('api.update-profile');
+    Route::post('update-user-profile', 'UsersController@updateUserProfile')->name('api.update-user-profile');
 
 	Route::post('update-location', 'UsersController@updateLocation')->name('api.update-location');
 });

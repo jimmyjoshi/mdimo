@@ -21,7 +21,6 @@ class UserTransformer extends Transformer
             'birthdate'     => $this->nulltoBlank($data->birthdate),
             'profile_pic'   => URL('img/user/'. $data->profile_pic),
             'has_store'     => isset($store) && isset($store->id) ? 1 : 0,
-            'store_id'      => isset($store) && isset($store->id) ? $store->id : '',
             'enterprise_id' => isset($store) && isset($store->id) ? $store->id : '',
         ];
     }

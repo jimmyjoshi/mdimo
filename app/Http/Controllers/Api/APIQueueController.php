@@ -48,10 +48,9 @@ class APIQueueController extends BaseApiController
      */
     public function index(Request $request)
     {
-        if($request->has('store_id'))
+        if($request->has('enterprise_id'))
         {
-            $today      = $request->has('today') ? $request->get('today') : date('Y-m-d');
-            $queueData  = $this->repository->getQueueWithMembers($request->get('store_id'), $today);
+            $queueData  = $this->repository->getQueueWithMembers($request->get('enterprise_id'));
 
             if($queueData && isset($queueData->id))
             {
@@ -76,7 +75,7 @@ class APIQueueController extends BaseApiController
     {
         $today = $request->has('today') ? $request->get('today') : date("Y-m-d");
         
-        if($request->has('store_id'))
+        if($request->has('enterprise_id'))
         {
             $input = $request->all();
             $input['today'] = $today;
@@ -261,5 +260,31 @@ class APIQueueController extends BaseApiController
         return $this->failureResponse([
             'reason' => 'No Queue found',
         ], 'No Queue found');
+    }
+
+    /**
+     * Create
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function createByStore(Request $request)
+    {
+        if($request->has('enterprise_id'))
+        {
+            $status = $this->repository->createByStore($request->all());
+
+            if($status)
+            {
+                $queueData    = $this->repository->getQueueWithMembers($request->get('enterprise_id'));
+                $responseData = $this->queueTransformer->transform($queueData);
+            }
+
+            return $this->successResponse($responseData, 'Queue is Created Successfully');
+        }
+
+        return $this->setStatusCode(400)->failureResponse([
+            'reason' => 'Invalid Inputs or Member has already Joined Queue'
+            ], 'Something went wrong !');
     }
 }

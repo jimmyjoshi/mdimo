@@ -10,6 +10,7 @@ use App\Models\Queue\Queue;
 use App\Repositories\DbRepository;
 use App\Exceptions\GeneralException;
 use App\Models\Store\Store;
+use App\Models\Access\User\User;
 use App\Models\QueueMember\QueueMember;
 use Carbon\Carbon;
 
@@ -194,9 +195,9 @@ class EloquentQueueRepository extends DbRepository
      */
     public function create($input)
     {
-        $date  = date("Y-m-d", strtotime($input['today']));
-        $queue = $this->getTodayQueue($input['store_id'], $date);
-        $store = Store::where('id', $input['store_id'])->first();
+        //$date  = date("Y-m-d", strtotime($input['today']));
+        $queue = $this->getTodayQueue($input['enterprise_id']);
+        $store = Store::where('id', $input['enterprise_id'])->first();
 
         if(isset($queue) && isset($queue->id))
         {
@@ -216,9 +217,9 @@ class EloquentQueueRepository extends DbRepository
             {
                 $queue = $this->model->create([
                     'user_id'       => access()->user()->id,
-                    'store_id'      => $input['store_id'],
+                    'store_id'      => $input['enterprise_id'],
                     'title'         => $store->title . ' Queue',
-                    'qdate'         => $date
+                    'qdate'         => date('Y-m-d')
                 ]);
 
                 $this->addQueueMember($queue, $input);
@@ -265,10 +266,11 @@ class EloquentQueueRepository extends DbRepository
     {
         if($queue)
         {
-            $queueNumber = access()->getQueueNumber($input['store_id'], $queue->qdate);
+            $storeId     = isset($input['enterprise_id']) ? $input['enterprise_id'] : $input['store_id'];
+            $queueNumber = access()->getQueueNumber($storeId, $queue->qdate);
             $queueMember = [
                 'queue_id'      => $queue->id,
-                'store_id'      => $input['store_id'],
+                'store_id'      => $storeId,
                 'user_id'       => $input['user_id'],
                 'queue_number'  => $queueNumber,
                 'member_count'  => $input['member_count'],
@@ -446,8 +448,7 @@ class EloquentQueueRepository extends DbRepository
         if($storeId && $date)
         {
             return $this->model->with('members')->where([
-                'store_id'  => $storeId,
-                'qdate'     => date('Y-m-d', strtotime($date))
+                'store_id'  => $storeId
             ])->first();
         }
 
@@ -463,11 +464,10 @@ class EloquentQueueRepository extends DbRepository
      */
     public function getQueueWithMembers($storeId = null, $date = null)
     {
-        if($storeId && $date)
+        if($storeId)
         {
             return $this->model->with(['members', 'members.user'])->where([
-                'store_id'  => $storeId,
-                'qdate'     => date('Y-m-d', strtotime($date))
+                'store_id'  => $storeId
             ])->first();
         }
 
@@ -582,5 +582,64 @@ class EloquentQueueRepository extends DbRepository
         $queueMember->queue_number      = 0;
         $queueMember->description       = 'Processed at ' . date('Y-m-d H:i:s');
         return $queueMember->save();
+    }
+
+    public function createByStore($input = array())
+    {
+        $storeId    = $input['enterprise_id'];
+        $queue      = $this->model->where('store_id', $storeId)->first();
+        $queueData  = [];
+
+        if(!isset($queue) && !isset($queue->id))
+        {
+            $queue = $this->model->create([
+                'user_id' => access()->user()->id,
+                'store_id'  => $storeId,
+                'title'     => 'New Queue Created',
+                'qdate'     => date('Y-m-d')
+            ]);
+        }
+        
+        $member = $this->getMemberByPhone($input);
+        $queueData = [
+            'store_id'      => $storeId,
+            'user_id'       => $member->id,
+            'member_count'  => $input['member_count'],
+        ];
+        $this->addQueueMember($queue, $queueData);
+
+        return $queue;
+    }
+
+    public function getMemberByPhone($input = array())
+    {
+        if(isset($input['phone']) && isset($input['country_code']))
+        {
+            $user = User::where([
+                'phone'         => $input['phone'],
+                'country_code'  => $input['country_code']
+            ])->first();
+
+            if(isset($user) && isset($user->id))
+            {
+                return $user;
+            }
+
+            $user = User::create([
+                'name'          => $input['name'],
+                'phone'         => $input['phone'],
+                'country_code'  => $input['country_code'],
+                'email'         => $input['phone'] . '@yopmail.com',
+                'password'      => bcrypt($input['phone']),
+                'status'        => 1,
+                'confirmed'     => 1,
+                'age'           => 18,
+                'user_type'     => 0
+            ]);
+
+            return $user;
+        }
+
+        return false;
     }
 }

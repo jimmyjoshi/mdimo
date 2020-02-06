@@ -40,7 +40,7 @@ class QueueTransformer extends Transformer
         return [
             "queue_id"      => (int) $item->id, 
             "user_id"       => $item->user_id, 
-            "store_id"      => $item->store_id, 
+            "enterprise_id" => $item->store_id, 
             "title"         => $item->title, 
             "qdate"         => date('m/d/Y', strtotime($item->qdate)),
             "members"       => $memberData
