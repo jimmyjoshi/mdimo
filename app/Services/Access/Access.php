@@ -176,7 +176,27 @@ class Access
         return 1;
     }
 
-    public function getUserLastOrderId($storeId = null)
+    public function getUserLastOrderId($userId = null)
+    {
+        if($userId)
+        {
+            $order  = Order::where([
+                'user_id'   => $userId
+            ])
+            ->orderBy('id', 'desc')
+            ->first();
+
+
+            if(isset($order) && isset($order->id))
+            {
+                return $order->id;
+            }
+        }
+
+        return '';
+    }
+
+    public function getUserstoreLastOrderId($storeId = null)
     {
         $userId = $this->user()->id;
         $order  = Order::where([

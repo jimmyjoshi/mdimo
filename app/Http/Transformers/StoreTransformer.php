@@ -32,7 +32,7 @@ class StoreTransformer extends Transformer
             "image"         => URL('img/store/'. $item->enterprise_display_image), 
             "latitude"      => $item->latitude, 
             "longitude"     => $item->longitude,
-            "last_order_id" => access()->getUserLastOrderId($item->id)
+            "last_order_id" => access()->getUserstoreLastOrderId($item->id)
         ];
     }
 }

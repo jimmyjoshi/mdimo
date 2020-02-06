@@ -54,9 +54,12 @@ class APIStoreController extends BaseApiController
 
         if(isset($items) && count($items))
         {
-            $itemsOutput = $this->storeTransformer->transformCollection($items);
+            $itemsOutput['stores']    = $this->storeTransformer->transformCollection($items);
+            $responseData   = array_merge($itemsOutput, [
+                'user_last_order_id' => access()->getUserLastOrderId(access()->user()->id)
+            ]);
 
-            return $this->successResponse($itemsOutput);
+            return $this->successResponse($responseData);
         }
 
         return $this->setStatusCode(400)->failureResponse([
