@@ -209,46 +209,93 @@ class EloquentOrderRepository extends DbRepository
     {
         $userId     = $input['user_id'];
         $categoryId = $input['category_id'];
-        $queueId    = $input['queue_id'];
-        $storeId    = $input['store_id'];
-        $order      = $this->getOrderByQueueId($userId, $storeId, $queueId);
+        $queueId    = isset($input['queue_id']) && !empty($input['queue_id']) ? $input['queue_id'] : false;
+        $storeId    = $input['enterprise_id'];
+        $items      = $input['items'];
 
-        if(isset($order) && isset($order->id))
+        if(is_array($items) && count($items))
         {
-            $status = $this->validateAddItem($order, $input);
-
-            if($status)
+            if($queueId)
             {
-                $this->addOrderItems($order, $input);
+                $order = $this->getOrderByQueueId($userId, $storeId, $queueId);
+
+                if(isset($order) && isset($order->id))
+                {
+                    $status = $this->validateAddItem($order, $input);
+
+                    if($status)
+                    {
+                        foreach($items as $myItem)
+                        {   
+                            $this->addOrderItems($order, [
+                                'item_id' => $myItem['item_id'],
+                                'qty'     => $myItem['qty']
+                            ]);
+                        }
+                    }
+                    return $order;
+                }
+                else
+                {
+                    $orderData = [
+                        'user_id'   => $userId,
+                        'store_id'  => $storeId,
+                        'queue_id'  => $queueId,
+                        'category_id' => $categoryId,
+                        'title'     => 'New Order at ' . date('Y-m-d'),
+                        'image'     => 'default.png'
+                    ];
+
+                    $order = $this->model->create($orderData);
+
+                    $order->qr_code_image = $order->id .'.png';
+                    $order->save();
+
+                    \QRCode::text($order->id)
+                        ->setOutfile(public_path() . '/order-images/'. $order->id .'.png')
+                        ->png();
+
+                    if(isset($order) && $order->id)
+                    {
+                        foreach($items as $myItem)
+                        {   
+                            $this->addOrderItems($order, [
+                                'item_id' => $myItem['item_id'],
+                                'qty'     => $myItem['qty']
+                            ]);
+                        }
+                        return $order;
+                    }
+                }
             }
-            return $order;
-        }
-        else
-        {
-            $orderData = [
-                'user_id'   => $userId,
-                'store_id'  => $storeId,
-                'queue_id'  => $queueId,
-                'category_id' => $categoryId,
-                'title'     => 'New Order at ' . date('Y-m-d'),
-                'image'     => 'default.png'
-            ];
-
-            $order = $this->model->create($orderData);
-
-            $order->qr_code_image = $order->id .'.png';
-            $order->save();
-
-            \QRCode::text($order->id)
-                ->setOutfile(public_path() . '/order-images/'. $order->id .'.png')
-                ->png();
-
-            if(isset($order) && $order->id)
+            else
             {
-                $this->addOrderItems($order, $input);
+                $order = $this->model->create([
+                    'user_id'   => access()->user()->id,
+                    'store_id'  => $storeId,
+                    'title'     => 'Normal Order Created',
+                    'image'     => 'default.png'
+                ]);
+
+                $order->qr_code_image = $order->id .'.png';
+                $order->save();
+
+                \QRCode::text($order->id)
+                    ->setOutfile(public_path() . '/order-images/'. $order->id .'.png')
+                    ->png();
+
+                foreach($items as $myItem)
+                {   
+                    $this->addOrderItems($order, [
+                        'item_id' => $myItem['item_id'],
+                        'qty'     => $myItem['qty']
+                    ]);
+                }
+
                 return $order;
             }
         }
+
 
         return false;
     }

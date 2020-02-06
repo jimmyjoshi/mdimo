@@ -30,6 +30,7 @@ class QueueTransformer extends Transformer
                         'user_id'       => $member->user_id,
                         'name'          => $member->user->name,
                         'phone'         => $member->user->phone,
+                        'country_code'  => $this->nulltoBlank($member->user->country_code),
                         'member_count'  => $member->member_count,
                         'queue_number'  => $member->queue_number
                     ];
