@@ -208,7 +208,7 @@ class EloquentOrderRepository extends DbRepository
     public function create($input)
     {
         $userId     = $input['user_id'];
-        $categoryId = $input['category_id'];
+        $categoryId = isset($input['category_id']) ? $input['category_id']: null;
         $queueId    = isset($input['queue_id']) && !empty($input['queue_id']) ? $input['queue_id'] : false;
         $storeId    = $input['enterprise_id'];
         $items      = $input['items'];
