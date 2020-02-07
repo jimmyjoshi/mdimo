@@ -36,7 +36,7 @@ class OrderTransformer extends Transformer
                     'qty'               => $detail->qty,
                     'price_with_tax'    => number_format($detail->price_with_tax, 2),
                     'price_without_tax' => number_format($detail->price_without_tax, 2),
-                    "image"             => URL('img/item/'. $detail->image)
+                    "image"             => URL('img/item/'. $detail->food_image)
 
                 ];
 
@@ -49,7 +49,7 @@ class OrderTransformer extends Transformer
             "order_id"          => (int) $item->id,
             "user_id"           => $item->user_id, 
             "store_id"          => $item->store_id, 
-            "queue_id"          => $item->queue_id,
+            "queue_id"          => $this->nulltoBlank($item->queue_id),
             "total_with_tax"    => $totalWithTax,
             "total_without_tax" => $totalWithOutTax,
             "order_items"       => $itemDetails,
