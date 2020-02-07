@@ -27,6 +27,7 @@ class OrderTransformer extends Transformer
         {
             foreach($item->order_details as $detail)
             {
+                $image         = $detail->image;
                 $itemDetails[] = [
                     'order_item_id'     => (int) $detail->id,
                     'item_id'           => (int) $detail->item_id,
@@ -36,7 +37,7 @@ class OrderTransformer extends Transformer
                     'qty'               => $detail->qty,
                     'price_with_tax'    => number_format($detail->price_with_tax, 2),
                     'price_without_tax' => number_format($detail->price_without_tax, 2),
-                    "image"             => URL('img/item/'. $detail->food_image)
+                    "image"             => URL('img/item/'. $image)
 
                 ];
 
