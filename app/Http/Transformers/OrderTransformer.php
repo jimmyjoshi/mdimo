@@ -34,6 +34,8 @@ class OrderTransformer extends Transformer
                     'category_id'       => (int) $detail->category_id,
                     "category_title"    => isset($detail->category) ? $detail->category['food_short_name'] : '',
                     'title'             => $detail->title,
+                    'food_short_name'   => isset($detail->item) ? $detail->item->food_short_name : '',
+                    'food_description'   => isset($detail->item) ? $detail->item->food_description : '',
                     'qty'               => (int) $detail->qty,
                     'price_with_tax'    => number_format($detail->price_with_tax, 2),
                     'price_without_tax' => number_format($detail->price_without_tax, 2),
