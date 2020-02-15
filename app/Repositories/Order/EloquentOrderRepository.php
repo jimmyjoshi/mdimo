@@ -211,7 +211,18 @@ class EloquentOrderRepository extends DbRepository
         $categoryId = isset($input['category_id']) ? $input['category_id']: null;
         $queueId    = isset($input['queue_id']) && !empty($input['queue_id']) ? $input['queue_id'] : false;
         $storeId    = $input['enterprise_id'];
+        $orderId    = isset($input['order_id']) ? $input['order_id'] : false;
         $items      = $input['items'];
+
+        if($orderId)
+        {
+            $order = $this->model->where('id', $orderId)->first();
+
+            if(!isset($order->id))
+            {
+                return false;
+            }
+        }
 
         if(is_array($items) && count($items))
         {
@@ -268,6 +279,20 @@ class EloquentOrderRepository extends DbRepository
                     }
                 }
             }
+            else if(isset($order) && $orderId)
+            {
+                $this->flushOrderItems($orderId);
+
+                foreach($items as $myItem)
+                {   
+                    $this->addOrderItems($order, [
+                        'item_id' => $myItem['item_id'],
+                        'qty'     => $myItem['qty']
+                    ]);
+                }
+
+                return $order;
+            }
             else
             {
                 $order = $this->model->create([
@@ -298,6 +323,22 @@ class EloquentOrderRepository extends DbRepository
 
 
         return false;
+    }
+
+    /**
+     * Flush Order Items
+     *
+     * @param int $orderId
+     * @return bool|int|mixed
+     */
+    public function flushOrderItems($orderId = null)
+    {
+        if($orderId)
+        {
+            return OrderDetail::where('order_id', $orderId)->delete();
+        }
+
+        return true;
     }
 
     /**

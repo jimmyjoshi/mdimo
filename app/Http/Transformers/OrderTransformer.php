@@ -43,8 +43,8 @@ class OrderTransformer extends Transformer
 
                 ];
 
-                $totalWithTax       = $totalWithTax + $detail->price_with_tax;
-                $totalWithOutTax    = $totalWithOutTax + $detail->price_without_tax;
+                $totalWithTax       = number_format($totalWithTax + $detail->price_with_tax * $detail->qty, 2);
+                $totalWithOutTax    = number_format($totalWithOutTax + $detail->price_without_tax * $detail->qty, 2);
             }
         }
 
