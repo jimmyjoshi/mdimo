@@ -28,7 +28,7 @@ class QueueTransformer extends Transformer
                 {
                     $memberData[] = [
                         'user_id'       => $member->user_id,
-                        'name'          => $member->user->name,
+                        'name'          => isset($member->user_name) ? $member->user_name : $member->user->name,
                         'phone'         => $member->user->phone,
                         'country_code'  => $this->nulltoBlank($member->user->country_code),
                         'member_count'  => $member->member_count,

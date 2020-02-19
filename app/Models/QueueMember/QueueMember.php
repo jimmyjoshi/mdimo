@@ -24,7 +24,7 @@ class QueueMember extends BaseModel
      *
      */
     protected $fillable = [
-        "id", "queue_id", "store_id", "user_id", "queue_number", "member_count", "processed_number", "processed_at", "description", "is_active", "created_at", "updated_at", 
+        "id", "queue_id", "store_id", "user_id", "user_name", "queue_number", "member_count", "processed_number", "processed_at", "description", "is_active", "created_at", "updated_at", 
     ];
 
     /**

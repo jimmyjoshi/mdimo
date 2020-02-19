@@ -605,6 +605,7 @@ class EloquentQueueRepository extends DbRepository
             'store_id'      => $storeId,
             'user_id'       => $member->id,
             'member_count'  => $input['member_count'],
+            'user_name'     => isset($input['name']) ? $input['name'] : $member->name
         ];
         $this->addQueueMember($queue, $queueData);
 
