@@ -22,6 +22,7 @@ class UserTransformer extends Transformer
             'profile_pic'   => URL('img/user/'. $data->profile_pic),
             'has_store'     => isset($store) && isset($store->id) ? 1 : 0,
             'enterprise_id' => isset($store) && isset($store->id) ? $store->id : '',
+            'enterprise_name' => isset($store) && isset($store->id) ? $store->title : '',
         ];
     }
 
