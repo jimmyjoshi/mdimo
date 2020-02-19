@@ -274,6 +274,7 @@ class EloquentQueueRepository extends DbRepository
                 'user_id'       => $input['user_id'],
                 'queue_number'  => $queueNumber,
                 'member_count'  => $input['member_count'],
+                'user_name'     => isset($input['user_name']) ? $input['user_name'] : null,
                 'description'   => 'Join Queue at ' . $queueNumber
             ];
 
