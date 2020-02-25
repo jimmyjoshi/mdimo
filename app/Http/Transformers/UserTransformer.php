@@ -9,11 +9,19 @@ class UserTransformer extends Transformer
     {
         $store = isset($data->store) ? (object) $data->store : false;
         
+        $customerEmail = explode('@', $data->email);
+        $email         = $this->nulltoBlank($data->email);
+
+        if($customerEmail[1] == 'default.com')
+        {
+            $email = 'email...';
+        }
+        
         return [
             'user_id'       => (int) $data->id,
             'user_token'    => $data->token,
             'name'          => $this->nulltoBlank($data->name),
-            'email'         => $this->nulltoBlank($data->email),
+            'email'         => $email,
             'user_type'     => isset($store) && isset($store->id) ? 1 : 0,
             'country_code'  => $this->nulltoBlank($data->country_code),
             'phone'         => $this->nulltoBlank($data->phone),
